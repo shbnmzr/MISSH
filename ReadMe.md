@@ -1,4 +1,4 @@
-# ISSH
+# MISSH
 
 The purpose of this program is to benchmark different approaches that solve the problem of computing the hashing of DNA sequences by using spaced seeds.
 The original code was written by Samuele Girotto for the paper that presented the FSH approach (paper: http://www.dei.unipd.it/~ciompin/main/fsh.html repo: https://bitbucket.org/samu661/fsh/src/master/ ), was later modified by Enrico Petrucci by adding the implementation of the ISSH, first for the version single seed(paper and repo: http://www.dei.unipd.it/~ciompin/main/issh.html ), and then -
