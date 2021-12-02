@@ -63,3 +63,15 @@ $ ./ISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi
 All the examples use test files which are present in this program.
 
 Please note that the hashing results are not saved, but are discarded once computed in order to require only a small amount of memory. This is reasonable because we are interested in the time required for the computation and not in obtaining the resulting hashing.
+
+Citation
+---------
+Enrico Petrucci, Laurent Noé, Cinzia Pizzi, and Matteo Comin,
+"Iterative Spaced Seed Hashing: Closing the Gap Between Spaced Seed Hashing and k-mer Hashing"
+Journal of Computational Biology 2020 27:2, 223-233 
+http://doi.org/10.1089/cmb.2019.0298
+
+etrucci E., Noé L., Pizzi C., Comin M. (2019) "Iterative Spaced Seed Hashing: Closing the Gap Between Spaced Seed Hashing and k-mer Hashing"
+In Bioinformatics Research and Applications. ISBRA 2019. Lecture Notes in Computer Science, vol 11490, pp 208-219.
+https://doi.org/10.1007/978-3-030-20242-2_18
+
