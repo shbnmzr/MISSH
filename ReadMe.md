@@ -78,7 +78,9 @@ Please note that the hashing results are not saved, but are discarded once compu
 Citation
 ---------
 Efficient Hashing of Multiple Spaced Seeds with Application
+
 Eleonora Miani, Enrico Petrucci, Cinzia Pizzi and Matteo Comin
+
 Accepted at BIOINFORMATICS 2023 - 14th International Conference on Bioinformatics Models, Methods and Algorithms
 
 
