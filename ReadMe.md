@@ -30,19 +30,19 @@ Execution parameters:
 
 - -si followed by the relative path of the file containing the single_end sequence.
 ```sh    
-$ ./ISSH -si ../TestInputFile/reads_800.fa
+$ ./MISSH -si ../TestInputFile/reads_800.fa
 ```
     
 - -pi followed by the two relative paths of the two files containing the paired_end sequence.
  
 ```sh   
-$ ./ISSH -pi ../TestInputFile/paired.fna.1 ../TestInputFile/paired.fna.2
+$ ./MISSH -pi ../TestInputFile/paired.fna.1 ../TestInputFile/paired.fna.2
 ```
     
 - -dirO followed by the relative path where the program will save the processing times. Default: ../output/
     
 ```sh   
-$ ./ISSH -si ../TestInputFile/reads_800.fa -dirO ../output/test1/
+$ ./MISSH -si ../TestInputFile/reads_800.fa -dirO ../output/test1/
 ```
     
 - -q followed by the relative path of the file containing the spaced seeds which will be used.
@@ -58,17 +58,17 @@ $ ./ISSH -si ../TestInputFile/reads_800.fa -dirO ../output/test1/
   - 1111110101101011100111011001111 -> rasbhari maximizing sensitivity 
     
 ```sh   
-$ ./ISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna
+$ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna
 ```
 - -test followed by single or multi specify the kind of test that we want to perform, by default both tests are performed.
     
 ```sh   
-$ ./ISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi
+$ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi
 ```
 - -threads followed by a number set the number of thread for the openmp library (in order to use multiple threads with the "naive" method decommenting a line of code is needed) it is used in the methods that are implemented for supporting the use of multiple cores (ISSHmulticolumnParallel) 
 
 ```sh   
-$ ./ISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi -threads 4
+$ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi -threads 4
 ```
 
 All the examples use test files which are present in this program.
