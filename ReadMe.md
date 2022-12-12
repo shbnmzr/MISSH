@@ -1,4 +1,15 @@
-# MISSH
+# MISSH : Efficient Hashing of Multiple Spaced Seeds with Application
+
+Alignment-free analysis of sequences has enabled high-throughput processing of sequencing data in many bioinformatics pipelines. 
+Hashing k-mers is a common function across many alignment-free applications and it is widely used for indexing, querying and rapid similarity search. Recently, spaced seeds, a special type of pattern that accounts for errors or mutations, are routinely used instead of k-mers. Spaced seeds allow to improve the sensitivity, with respect to k-mers, in many applications, however the hashing of spaced seeds increases substantially the computational time. Moreover, if multiple spaced seeds are used the accuracy can further increases at the cost of running time. 
+In this paper we address the problem of efficient multiple spaced seed hashing. The proposed algorithms exploit the similarity of adjacent spaced seed hash values in an input sequence in order to efficiently compute the next hashes. 
+We report the results on several tests which show that our methods
+significantly outperform the previously proposed algorithms, with a speedup that can reach 20x. 
+We also apply these efficient spaced seeds hashing algorithms to an application in the field of metagenomic, the classification of reads performed by Clark-S, and we shown that a significant speedup can be obtained, thus resolving the slowdown introduced by the use of multiple spaced seeds.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 The purpose of this program is to benchmark different approaches that solve the problem of computing the hashing of DNA sequences by using spaced seeds.
 The original code was written by Samuele Girotto for the paper that presented the FSH approach (paper: http://www.dei.unipd.it/~ciompin/main/fsh.html repo: https://bitbucket.org/samu661/fsh/src/master/ ), was later modified by Enrico Petrucci by adding the implementation of the ISSH, first for the version single seed(paper and repo: http://www.dei.unipd.it/~ciompin/main/issh.html ), and then -
@@ -66,12 +77,9 @@ Please note that the hashing results are not saved, but are discarded once compu
 
 Citation
 ---------
-Enrico Petrucci, Laurent Noé, Cinzia Pizzi, and Matteo Comin,
-"Iterative Spaced Seed Hashing: Closing the Gap Between Spaced Seed Hashing and k-mer Hashing"
-Journal of Computational Biology 2020 27:2, 223-233 
-http://doi.org/10.1089/cmb.2019.0298
+Efficient Hashing of Multiple Spaced Seeds with Application
+Eleonora Miani, Enrico Petrucci, Cinzia Pizzi and Matteo Comin
+Accepted at BIOINFORMATICS 2023 - 14th International Conference on Bioinformatics Models, Methods and Algorithms
 
-etrucci E., Noé L., Pizzi C., Comin M. (2019) "Iterative Spaced Seed Hashing: Closing the Gap Between Spaced Seed Hashing and k-mer Hashing"
-In Bioinformatics Research and Applications. ISBRA 2019. Lecture Notes in Computer Science, vol 11490, pp 208-219.
-https://doi.org/10.1007/978-3-030-20242-2_18
+
 
