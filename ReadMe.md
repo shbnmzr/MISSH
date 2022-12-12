@@ -65,7 +65,7 @@ $ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna
 ```sh   
 $ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi
 ```
-- -threads followed by a number set the number of thread for the openmp library (in order to use multiple threads with the "naive" method decommenting a line of code is needed) it is used in the methods that are implemented for supporting the use of multiple cores (ISSHmulticolumnParallel) 
+- -threads followed by a number set the number of thread for the openmp library (in order to use multiple threads with the "naive" method decommenting a line of code is needed) it is used in the methods that are implemented for supporting the use of multiple cores (MISSHmulticolumnParallel) 
 
 ```sh   
 $ ./MISSH -si ../TestInputFile/reads_800.fa -q ../Seeds/Seed_test.fna -test multi -threads 4
