@@ -74,7 +74,7 @@ void parseLine(string line, vector<string>& lineV, vector<string> delimiter)
 string LCSubstr(const string& x, const string& y){
     int m = x.length(), n=y.length();
 
-    uint LCSuff[m][n];
+    unsigned int LCSuff[m][n];
 
     for(int j=0; j<=n; j++)
         LCSuff[0][j] = 0;
