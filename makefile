@@ -5,8 +5,9 @@ LIBS :=
 DEBUG_DIR := ./debug
 BUILD_DIR := ./build
 SOURCE_DIR := ./src
-CC = g++
-
+GPP_PATH := /opt/homebrew/bin/g++-14 # Adjust this path if necessary
+CC := $(GPP_PATH)
+CXX := $(GPP_PATH)
 
 # if make debug was called, define directories accordingly and add -g flag
 ifeq (debug,$(filter debug,$(MAKECMDGOALS)))
@@ -22,7 +23,6 @@ else ifeq (all,$(filter all,$(MAKECMDGOALS)))
 
 	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 endif
-
 
 ifeq ($(OS),Windows_NT)
 	# if on windows, search for all .cpp files from sources directory
@@ -42,18 +42,15 @@ else
 	TREE_UNIX := $(sort $(patsubst %/,%,$(dir $(OBJS))))
 endif
 
-
-
 # all target
 all: $(BUILD_DIR)/ISSH
 
 $(BUILD_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CC) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
 	@echo 'Finished building target: $@'
 	@echo ' '
-
 
 # debug target
 debug: $(DEBUG_DIR)/ISSH
@@ -61,20 +58,18 @@ debug: $(DEBUG_DIR)/ISSH
 $(DEBUG_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CC) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
 	@echo 'Finished building target: $@'
 	@echo ' '
-
 
 # compile all dependencies for ISSH
 .SECONDEXPANSION:
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp | $$(@D)
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	$(CXX) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-
 
 # create subdirectories tree, depending on which system we are
 
@@ -85,7 +80,6 @@ $(TREE_WINDOWS): %:
 $(TREE_UNIX): %:
 	mkdir -p $@
 	mkdir -p $(@:$(OBJ_DIR)%=$(DEPS_DIR)%)
-
 
 remake: clean-build all
 
@@ -98,5 +92,5 @@ clean-build:
 	-@echo ' '
 
 clean-debug:
-	$(RM) -r $(DEBUG_DIR) 
+	$(RM) -r $(DEBUG_DIR)
 	-@echo ' '
