@@ -3,125 +3,130 @@
  *
  *  Created on: 20/lug/2016
  *      Author: samuele
- *			Modified by: enrico
+ *      Modified by: enrico
  */
 
 #ifndef SRC_HASH_SPACEDQMER_H_
 #define SRC_HASH_SPACEDQMER_H_
+
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <bitset>
-#include <limits> 
+#include <limits>
+
 using namespace std;
 
-//For unit
+// Structure to store information about positions of ones in a spaced seed
 struct Pos_Ones {
-	size_t index_one = numeric_limits<size_t>::max();
-	size_t n_one = 0;
-	size_t pos_start = 0;
-	size_t n_one_before = 0;//numero di 1 che precedono il primo 1 dello unit
+    size_t index_one = numeric_limits<size_t>::max(); // Index of '1' in the spaced seed
+    size_t n_one = 0; // Number of '1's
+    size_t pos_start = 0; // Starting position
+    size_t n_one_before = 0; // Number of '1's before the first '1' in the unit
 };
+
 typedef vector<Pos_Ones> V_Pos_Ones;
 
-//for previous
-//position is a vector of index referring to the positions inside the seed
+// For previous hashes, position is a vector of indices referring to positions inside the seed
 typedef vector<size_t> Position;
 typedef vector<Position> V_Position;
 
-// PreviousShift è la struttura che mi contiene tutte le informazioni
-// riguardanti uno shift precedente a quello che sto considerando dello spaced seed
-// mi serve per calcolare più velocemente lo speedup previous
+// PreviousShift structure contains all the information regarding a previous shift of the spaced seed
+// It is used to calculate the speedup previous more efficiently
 struct PreviousShift {
-	// vettori utilizzati principalmente da FSH
-	Position one_to_change;
-	Position one_to_remove;
+    Position one_to_change; // Positions to change
+    Position one_to_remove; // Positions to remove
+    Position one_to_keep; // Positions to keep
 
-	Position one_to_keep;
-  // one_exit è l'indice del primo uno sovrapponibile del vettore di uno dello
-	// spaced seed di quanto devo traslare l'hash.
-	size_t one_exit = 0;
-	// shift_min rappresenta lo shift dell'attuale previousShift rispetto a quello "principale"
-	size_t shift_min = 0;
-	// maschera necessaria al calcolo tramite ISSH
-	uint64_t mask=0;
-	inline size_t GetSize() const {
-		return this->one_to_change.size() + this->one_to_remove.size() + this->one_exit + (this->one_to_remove.empty() ? 0:2);
-	}
+    // Index of the first overlapping '1' in the spaced seed
+    size_t one_exit = 0;
+
+    // Shift of the current PreviousShift relative to the "main" one
+    size_t shift_min = 0;
+
+    // Mask required for calculation using ISSH
+    uint64_t mask = 0;
+
+    // Get the total size for the current shift
+    inline size_t GetSize() const {
+        return this->one_to_change.size() + this->one_to_remove.size() + this->one_exit + (this->one_to_remove.empty() ? 0 : 2);
+    }
 };
 
-// associato ad uno spacedqmer ho un vettore delle possibili traslazioni dello stesso
-// seed
+// Vector of PreviousShift structures associated with a spaced q-mer
 typedef vector<PreviousShift> V_PreviusShift;
 typedef vector<V_PreviusShift> V_V_PreviusShift;
+
 class SpacedQmer {
 public:
-	SpacedQmer();
-	SpacedQmer(string spaced_qmer, size_t numprev);
+    SpacedQmer(); // Default constructor
+    SpacedQmer(string spaced_qmer, size_t numprev); // Parameterized constructor
 
-	inline size_t GetWeight() const {
-		return this->pos_one.size();
-	}
-	inline size_t GetQ() const {
-		return this->spaced_q.length();
-	}
-	inline bool isOne(size_t index) const {
-		return this->spaced_q[index] == '1';
-	}
-	inline const Position& GetPosOne() const {
-		return this->pos_one;
-	}
+    // Get the weight (number of '1's) of the spaced q-mer
+    inline size_t GetWeight() const {
+        return this->pos_one.size();
+    }
 
-	inline const V_PreviusShift& GetShiftMinChange() const {
-		return this->shift_min_change;
-	}
+    // Get the length of the spaced q-mer
+    inline size_t GetQ() const {
+        return this->spaced_q.length();
+    }
 
-	inline const V_V_PreviusShift& GetMultipleShifts() const {
-		return this->multiple_shifts;
-	}
-	
-	inline const V_V_PreviusShift* GetMultipleShiftsPointer() const {
-		return &this->multiple_shifts;
-	}
-	
+    // Check if a character at a given index is '1'
+    inline bool isOne(size_t index) const {
+        return this->spaced_q[index] == '1';
+    }
 
-	inline const string& toString() const {
-		return this->spaced_q;
-	}
-	void reset(string spaced_qmer, size_t numprev);
+    // Get the positions of '1's in the spaced q-mer
+    inline const Position& GetPosOne() const {
+        return this->pos_one;
+    }
 
-	private:
-	// the actual string of ones and zeros, the original spaced seed
-	string spaced_q;
-	//pos one is a vector of index corresponding to ones in the seed
-	Position pos_one;
-	// vettore di posizioni nel vettore pos_one dove inizialmente devo ancora recupereare
-	// alcuna corrispondenza precedente.
-	Position pos_pos_one;
-	//it contains all the data of all the possible overlapping shifted seeds
-	V_PreviusShift shift_min_change;
+    // Get the shifts for a single previous hash
+    inline const V_PreviusShift& GetShiftMinChange() const {
+        return this->shift_min_change;
+    }
 
-  // è un vettore di gruppi di hash precedenti che voglio riutilizzare, il vettore che
-	// mi serve per calcolare gli hash gestisce sia regime sia transitorio
-	V_V_PreviusShift multiple_shifts;
+    // Get the shifts for multiple previous hashes
+    inline const V_V_PreviusShift& GetMultipleShifts() const {
+        return this->multiple_shifts;
+    }
 
-	// numero di hash precedenti che utilizzo a regime per recuperare le posizioni
-	// conterrà il valore passato da terminale
-	size_t num_prev=0;
-	void SaveIndexOne();
-	void GetShiftMax(V_PreviusShift& shift_max);
-	void SetMultipleShifts(size_t index);
-	void SetAllMultipleShift();
-	void SetBitMasks();
+    // Get the pointer to the shifts for multiple previous hashes
+    inline const V_V_PreviusShift* GetMultipleShiftsPointer() const {
+        return &this->multiple_shifts;
+    }
+
+    // Convert the spaced q-mer to string
+    inline const string& toString() const {
+        return this->spaced_q;
+    }
+
+    // Reset function to reinitialize the object
+    void reset(string spaced_qmer, size_t numprev);
+
+private:
+    string spaced_q; // The actual string of ones and zeros, the original spaced seed
+    Position pos_one; // Vector of indices corresponding to ones in the seed
+    Position pos_pos_one; // Vector of positions in the pos_one vector where correspondence is yet to be recovered
+    V_PreviusShift shift_min_change; // Data of all possible overlapping shifted seeds
+    V_V_PreviusShift multiple_shifts; // Vector of groups of previous hashes to reuse, for both steady-state and transient phases
+
+    size_t num_prev = 0; // Number of previous hashes to use, set from terminal
+
+    void SaveIndexOne(); // Save the indices of '1's in the spaced q-mer
+    void GetShiftMax(V_PreviusShift& shift_max); // Calculate maximum shifts for previous hashes
+    void SetMultipleShifts(size_t index); // Calculate shifts for a specific previous hash group
+    void SetAllMultipleShift(); // Calculate shifts for multiple previous hashes
+    void SetBitMasks(); // Create bit masks for removing unnecessary values from previous hashes
 };
 
-// funzioni di supporto che stampano qualche risultato
-void printp(Position p);
-void print_shift(PreviousShift s);
+// Support functions to print some results
+void printp(Position p); // Print the elements of a Position vector
+void print_shift(PreviousShift s); // Print the details of a PreviousShift object
 
-// funzioni di supporto che permettono di gestire con più chiarezza il vettore
-// delle posizioni che non sono ancora state recuperate
-void deleteElement(Position& pos, size_t index);
-bool isContained(Position pointer, Position pos, size_t index);
+// Support functions to manage the vector of positions that have not yet been recovered
+void deleteElement(Position& pos, size_t index); // Delete positions identified as recoverable from the vector
+bool isContained(Position pointer, Position pos, size_t index); // Check if a position is already recovered
 
 #endif /* SRC_HASH_SPACEDQMER_H_ */
