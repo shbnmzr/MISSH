@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <bitset>
+#include <limits>
 #include "./SpacedQmer.h"
 using namespace std;
 
