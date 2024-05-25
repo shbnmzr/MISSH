@@ -196,6 +196,31 @@ void SpacedQmer::SetMultipleShifts(size_t index) {
         this->multiple_shifts[index][0].one_to_change = pos_not_covered_yet;
 }
 
+
+// Helper function to convert subset index to spaced_qmer string
+std::string SpacedQmer::convertIndexToSpacedQmer(int index) {
+    // Implement this function based on how your subsets are defined
+    // Example:
+    std::vector<std::string> spaced_qmers = {
+        "110101011101100110100111111111",
+        // Add more spaced seed patterns here
+    };
+    return spaced_qmers[index];
+}
+
+void SpacedQmer::initializeWithSetCovering(const std::set<int>& universal_set, const std::vector<std::set<int>>& subsets) {
+    SetCoveringSolver solver(universal_set, subsets);
+    std::vector<int> solution = solver.solve();
+
+    // Initialize spaced seeds using the solution
+    for (int idx : solution) {
+        // Assuming subsets correspond to some predefined spaced seed patterns
+        // This example assumes you have a way to convert subset index to spaced_qmer string
+        std::string spaced_qmer = convertIndexToSpacedQmer(idx);
+        this->reset(spaced_qmer, 0);
+    }
+}
+
 // Function to create bit masks for removing unnecessary values from previous hashes
 void SpacedQmer::SetBitMasks() {
     for (size_t k = 0; k < this->multiple_shifts.size(); k++) {

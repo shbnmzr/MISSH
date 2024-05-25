@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <bitset>
 #include <limits>
+#include "SetCoveringSolver.h" 
 
 using namespace std;
 
@@ -104,6 +105,8 @@ public:
 
     // Reset function to reinitialize the object
     void reset(string spaced_qmer, size_t numprev);
+    void initializeWithSetCovering(const std::set<int>& universal_set, const std::vector<std::set<int>>& subsets);
+
 
 private:
     string spaced_q; // The actual string of ones and zeros, the original spaced seed
@@ -114,11 +117,15 @@ private:
 
     size_t num_prev = 0; // Number of previous hashes to use, set from terminal
 
+
     void SaveIndexOne(); // Save the indices of '1's in the spaced q-mer
     void GetShiftMax(V_PreviusShift& shift_max); // Calculate maximum shifts for previous hashes
     void SetMultipleShifts(size_t index); // Calculate shifts for a specific previous hash group
     void SetAllMultipleShift(); // Calculate shifts for multiple previous hashes
     void SetBitMasks(); // Create bit masks for removing unnecessary values from previous hashes
+    // New method declaration
+    string convertIndexToSpacedQmer(int index);
+
 };
 
 // Support functions to print some results
