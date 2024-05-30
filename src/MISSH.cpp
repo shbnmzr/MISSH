@@ -3,7 +3,6 @@
 //============================================================================
 
 #include "Test/Test.h"
-#include "Spaced/SetCoveringSolver.h" // Include the set covering solver
 #include "Spaced/SpacedQmer.h"
 #include <set>
 #include <vector>
