@@ -1,12 +1,11 @@
-/*
- * Test.cpp
- *
- */
-
 #include "Test.h"
-#include "../Spaced/SpacedQmerLP.h"
-#include "../Spaced/SpacedQmerLP.cpp"
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <vector>
+#include <chrono>
 
+using namespace std;
 
 Test::Test() {
     // TODO Auto-generated constructor stub

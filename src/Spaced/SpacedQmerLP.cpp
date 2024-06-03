@@ -1,5 +1,4 @@
 #include "SpacedQmerLP.h"
-#include "../Hash/HashFunction.h"
 #include <algorithm>
 #include <vector>
 

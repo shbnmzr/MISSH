@@ -2,6 +2,9 @@
 #define SRC_HASH_SPACEDQMERLP_H_
 
 #include "SpacedQmer.h"
+#include "../Hash/HashType.h"
+#include "../Hash/HashFunction.h"
+
 
 // Class for LP-based spaced seed hashing
 class SpacedQmerLP : public SpacedQmer {
