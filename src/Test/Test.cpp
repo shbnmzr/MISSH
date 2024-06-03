@@ -106,12 +106,15 @@ void Test::single_test_hashes(const SpacedQmer& spaced) {
     chrono.exe(this, &Test::single_test_ISSH, spaced, this->times_ISSH);
     cout << "Complete" << endl << flush;
 
-    const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&spaced);
-    if (spacedLP) {
-        cout << "Test linear programming set covering... " << flush;
-        chrono.exe(this, &Test::single_test_linear_programming_set_covering, spaced, this->times_linear_programming_set_covering);
-        cout << "Complete" << endl << flush;
-    }
+    /**
+     * Following line will be here for saftey and following potential use
+     * please keep just in case.
+    */
+    // const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&spaced);
+
+    cout << "Test linear programming set covering... " << flush;
+    chrono.exe(this, &Test::single_test_linear_programming_set_covering, spaced, this->times_linear_programming_set_covering);
+    cout << "Complete" << endl << flush;
 }
 
 void Test::single_test_equals(const SpacedQmer& spaced) {
