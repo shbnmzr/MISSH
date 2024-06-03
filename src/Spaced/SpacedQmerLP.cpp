@@ -1,50 +1,66 @@
 #include "SpacedQmerLP.h"
-#include <iostream>
-#include <vector>
+#include "../Hash/HashFunction.h"
 #include <algorithm>
-#include <limits>
+#include <vector>
 
-using namespace std;
-
-// Constructor definitions
 SpacedQmerLP::SpacedQmerLP() : SpacedQmer() {}
 
-SpacedQmerLP::SpacedQmerLP(string spaced_qmer, size_t numprev) : SpacedQmer(spaced_qmer, numprev) {}
+SpacedQmerLP::SpacedQmerLP(std::string spaced_qmer, size_t numprev) : SpacedQmer(spaced_qmer, numprev) {}
 
-// LP-based spaced seed hashing algorithm
-vector<Seed> SpacedQmerLP::lp_spaced_seed(const vector<int>& data, int seed_length) {
+std::vector<Position> SpacedQmerLP::lp_spaced_seed(const std::vector<int>& data, int seed_length) const {
     int n = data.size();
-    vector<vector<int>> A(n, vector<int>(n, 0));
-    for (int j = 0; j < n; ++j) {
-        for (int i = j; i < min(n, j + seed_length); ++i) {
+    std::vector<std::vector<int>> A(n, std::vector<int>(n, 0));
+    std::vector<int> x(n, 0);
+    std::vector<int> b(n, 1);
+
+    for (int i = 0; i < n - seed_length + 1; ++i) {
+        for (int j = i; j < i + seed_length; ++j) {
             A[i][j] = 1;
         }
     }
 
-    vector<int> c(n, 1);
-    vector<int> x(n, 0);
-
-    for (int i = 0; i < n; ++i) {
-        bool can_place_seed = true;
-        for (int j = i; j < i + seed_length && j < n; ++j) {
-            if (x[j] == 1) {
-                can_place_seed = false;
+    while (true) {
+        bool found = false;
+        for (int j = 0; j < n; ++j) {
+            int sum = 0;
+            for (int i = 0; i < n; ++i) {
+                sum += A[i][j] * x[i];
+            }
+            if (sum < b[j]) {
+                x[j] = 1;
+                found = true;
                 break;
             }
         }
-        if (can_place_seed) {
-            for (int j = i; j < i + seed_length && j < n; ++j) {
-                x[j] = 1;
-            }
-        }
+        if (!found) break;
     }
 
-    vector<Seed> seeds;
+    std::vector<Position> seeds;
     for (int i = 0; i < n; ++i) {
         if (x[i] == 1) {
-            seeds.push_back({i, seed_length});
+            Position seed;
+            for (int j = i; j < i + seed_length && j < n; ++j) {
+                seed.push_back(j);
+            }
+            seeds.push_back(seed);
         }
     }
 
     return seeds;
+}
+
+// Function to compute hashes using the LP-based method
+void GetHashes_with_LP(const std::string& sequence, const SpacedQmerLP& spaced, Hash_Err_V& vHash, hash_type (*CharToInt)(char)) {
+    std::vector<int> data(sequence.size());
+    for (size_t i = 0; i < sequence.size(); ++i) {
+        data[i] = CharToInt(sequence[i]);
+    }
+    int seed_length = spaced.GetQ();
+    std::vector<Position> positions = spaced.lp_spaced_seed(data, seed_length);
+    vHash.clear();
+    for (const auto& pos : positions) {
+        Hash_Err hash_err;
+        GetHashFromPosOne(sequence, 0, pos, hash_err, CharToInt);
+        vHash.push_back(hash_err);
+    }
 }

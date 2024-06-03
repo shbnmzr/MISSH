@@ -1,10 +1,4 @@
-/*
- * SpacedQmer.cpp
- *
- */
-
 #include "SpacedQmer.h"
-
 #include <iostream>
 
 // Default constructor
@@ -17,6 +11,11 @@ SpacedQmer::SpacedQmer() {
 SpacedQmer::SpacedQmer(string spaced_qmer, size_t numprev) {
     // Initialize with the given spaced q-mer and num_prev
     this->reset(spaced_qmer, numprev);
+}
+
+// Virtual destructor
+SpacedQmer::~SpacedQmer() {
+    // Destructor implementation (if needed)
 }
 
 // Reset function to reinitialize the object
@@ -96,9 +95,9 @@ void SpacedQmer::SetAllMultipleShift() {
 
     // Calculate the length of the transient phase: find the furthest previous shift
     size_t furthest_pos = this->multiple_shifts[0][0].shift_min;
-    for (size_t i = 1; i < this->multiple_shifts[0].size(); i++) {
-        if (furthest_pos < this->multiple_shifts[0][i].shift_min)
-            furthest_pos = this->multiple_shifts[0][i].shift_min;
+    for (size_t i = 1; i < multiple_shifts[0].size(); i++) {
+        if (furthest_pos < multiple_shifts[0][i].shift_min)
+            furthest_pos = multiple_shifts[0][i].shift_min;
     }
 
     // Extend the vector length to include both transient and steady-state shifts

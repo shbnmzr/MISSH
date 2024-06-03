@@ -421,5 +421,4 @@ inline static void GetHashes_with_ISSH(const string& s_Str,
 	}
 }
 
-
 #endif /* HASHFUNCTION_H_ */

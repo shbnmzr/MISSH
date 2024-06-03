@@ -2,17 +2,17 @@
 #define SRC_HASH_SPACEDQMERLP_H_
 
 #include "SpacedQmer.h"
-#include <vector>
 
-using namespace std;
-
+// Class for LP-based spaced seed hashing
 class SpacedQmerLP : public SpacedQmer {
 public:
-    SpacedQmerLP();
-    SpacedQmerLP(string spaced_qmer, size_t numprev);
+    SpacedQmerLP();  // Default constructor
+    SpacedQmerLP(std::string spaced_qmer, size_t numprev);  // Parameterized constructor
 
-    // New method for LP-based spaced seed hashing
-    vector<Seed> lp_spaced_seed(const vector<int>& data, int seed_length);
+    // LP-based spaced seed hashing algorithm
+    std::vector<Position> lp_spaced_seed(const std::vector<int>& data, int seed_length) const;
 };
+
+void GetHashes_with_LP(const std::string& sequence, const SpacedQmerLP& spaced, Hash_Err_V& vHash, hash_type (*CharToInt)(char));
 
 #endif /* SRC_HASH_SPACEDQMERLP_H_ */

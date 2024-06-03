@@ -53,6 +53,7 @@ class SpacedQmer {
 public:
     SpacedQmer(); // Default constructor
     SpacedQmer(string spaced_qmer, size_t numprev); // Parameterized constructor
+    virtual ~SpacedQmer(); // Virtual destructor for polymorphism
 
     // Get the weight (number of '1's) of the spaced q-mer
     inline size_t GetWeight() const {
@@ -98,7 +99,7 @@ public:
     void reset(string spaced_qmer, size_t numprev);
 
     // New method for LP-based spaced seed hashing
-    vector<Seed> lp_spaced_seed(const vector<int>& data, int seed_length);
+    vector<Position> lp_spaced_seed(const vector<int>& data, int seed_length);
 
 private:
     string spaced_q; // The actual string of ones and zeros, the original spaced seed
