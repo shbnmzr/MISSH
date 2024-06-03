@@ -1,6 +1,5 @@
 USER_OBJS :=
-LIBS := 
-
+LIBS :=
 
 # define base directories and compiler
 DEBUG_DIR := ./debug
@@ -15,20 +14,15 @@ ifeq (debug,$(filter debug,$(MAKECMDGOALS)))
 	OBJ_DIR := $(DEBUG_DIR)/obj
 	DEPS_DIR := $(DEBUG_DIR)/deps
 
-	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp -I/opt/homebrew/opt/cbc/include/cbc/ -I/opt/homebrew/opt/cbc/include/
-
-	LDFLAGS = -L/opt/homebrew/opt/cbc/lib -lCbc -lCbcSolver -lOsiClp -lClp -lCoinUtils -lOsi -lCoinMpsIO
+	CFLAGS = -g -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 
 # if make clean all, define directories accordingly
 else ifeq (all,$(filter all,$(MAKECMDGOALS)))
 	OBJ_DIR := $(BUILD_DIR)/obj
 	DEPS_DIR := $(BUILD_DIR)/deps
 
-	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp -I/opt/homebrew/opt/cbc/include/cbc/ -I/opt/homebrew/opt/cbc/include/
-
-	LDFLAGS = -L/opt/homebrew/opt/cbc/lib -lCbc -lCbcSolver -lOsiClp -lClp -lCoinUtils -lOsi -lCoinMpsIO
+	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 endif
-
 
 ifeq ($(OS),Windows_NT)
 	# if on windows, search for all .cpp files from sources directory

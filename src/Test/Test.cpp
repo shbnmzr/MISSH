@@ -8,7 +8,7 @@ tutti i calcoli che vengono effettuati dalle varie funzioni di hash, in
 particolare il calcolo posizione per posizione, il calcolo tramite l'algoritmo
 FSH e tramite ISSH.
 */
-#include "./Test.h"
+#include "../Test/Test.h"
 
 Test::Test() {
 	// TODO Auto-generated constructor stub
@@ -237,7 +237,6 @@ void Test::multi_save(const FileParameter& file, const vector<SpacedQmer>& multi
 	auto naive = duration_cast<milliseconds>(this->times_multi_naive.second - this->times_multi_naive.first);
 	auto speedup_previous = duration_cast<milliseconds>(this->times_multi_speedup_previous.second - this->times_multi_speedup_previous.first);
 	auto ISSH_single = duration_cast<milliseconds>(this->times_multi_ISSH_single.second - this->times_multi_ISSH_single.first);
-	auto set_covering = duration_cast<microseconds>(this->times_linear_programming_set_covering.second - this->times_linear_programming_set_covering.first);
 	auto speedup_multi_previous = duration_cast<milliseconds>(this->times_multi_speedup_multi_previous.second - this->times_multi_speedup_multi_previous.first);
 	auto ISSH_multi_v1 = duration_cast<milliseconds>(this->times_multi_ISSH_multi_v1.second - this->times_multi_ISSH_multi_v1.first);
 	auto ISSH_multi_col = duration_cast<milliseconds>(this->times_multi_ISSH_multi_col.second - this->times_multi_ISSH_multi_col.first);
@@ -308,10 +307,6 @@ void Test::multi_test_hashes(const vector<SpacedQmer>& multi_spaced) {
 
 	cout << "Test ISSH single... " << flush;
 	chrono.exe(this, &Test::multi_test_ISSH_single, multi_spaced, this->times_multi_ISSH_single);
-	cout << "Complete" << endl << flush;
-
-	cout << "Test Set Covering with Linear Programming... " << flush;
-	chrono.exe(this, &Test::linearProgrammingSetCovering, multi_spaced, this->set_covering);
 	cout << "Complete" << endl << flush;
 
 	cout << "Test multi previous... " << flush;
@@ -543,7 +538,6 @@ void Test::multi_test_speedup_previous(const vector<SpacedQmer>& multi_spaced) {
 
 void Test::multi_test_ISSH_single(const vector<SpacedQmer>& multi_spaced) {
 	Hash_Err_V_V hash_v(multi_spaced.size());
-	cout << "HERE HERE " << flush;	
 	for(size_t i = 0; i < this->to_hash.size(); ++i)
 	{
 		for(size_t j = 0; j < multi_spaced.size(); ++j)
@@ -553,16 +547,6 @@ void Test::multi_test_ISSH_single(const vector<SpacedQmer>& multi_spaced) {
 	}
 }
 
-void Test::linearProgrammingSetCovering(const vector<SpacedQmer>& multi_spaced) {
-	Hash_Err_V_V hash_v(multi_spaced.size());
-	for(size_t i = 0; i < this->to_hash.size(); ++i)
-	{
-		for(size_t j = 0; j < multi_spaced.size(); ++j)
-		{
-			GetHashes_with_ISSH(this->to_hash[i], multi_spaced[j], hash_v[j], CharToInt);
-		}
-	}
-}
 
 
 void Test::multi_test_speedup_multi_previous(const vector<SpacedQmer>& multi_spaced) {
@@ -659,4 +643,3 @@ void Test::multi_test_ISSH_multi_row(const MultiSeedInfoRow& infoRow) {
 	
 
 }
-
