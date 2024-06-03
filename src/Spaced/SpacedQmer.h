@@ -97,6 +97,9 @@ public:
     // Reset function to reinitialize the object
     void reset(string spaced_qmer, size_t numprev);
 
+    // New method for LP-based spaced seed hashing
+    vector<Seed> lp_spaced_seed(const vector<int>& data, int seed_length);
+
 private:
     string spaced_q; // The actual string of ones and zeros, the original spaced seed
     Position pos_one; // Vector of indices corresponding to ones in the seed
