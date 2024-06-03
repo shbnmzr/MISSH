@@ -1,11 +1,9 @@
-#include "Test.h"
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <vector>
-#include <chrono>
+/*
+ * Test.cpp
+ *
+ */
 
-using namespace std;
+#include "Test.h"
 
 Test::Test() {
     // TODO Auto-generated constructor stub
@@ -306,6 +304,21 @@ void Test::multi_test_hashes(const vector<SpacedQmer>& multi_spaced) {
     cout << "Test ISSH multi row... " << flush;
     chrono.exe(this, &Test::multi_test_ISSH_multi_row, infoRow, this->times_multi_ISSH_multi_row);
     cout << "Complete" << endl << flush;
+
+    // Add LP-based hashing test
+    bool hasLP = false;
+    for (const auto& spaced : multi_spaced) {
+        if (dynamic_cast<const SpacedQmerLP*>(&spaced)) {
+            hasLP = true;
+            break;
+        }
+    }
+
+    if (hasLP) {
+        cout << "Test LP-based hashing... " << flush;
+        chrono.exe(this, &Test::multi_test_LP_based, multi_spaced, this->times_multi_LP_based);
+        cout << "Complete" << endl << flush;
+    }
 }
 
 void Test::multi_test_equals(const vector<SpacedQmer>& multi_spaced) {
@@ -436,6 +449,18 @@ void Test::multi_test_equals(const vector<SpacedQmer>& multi_spaced) {
         cout << "Complete" << endl << flush;
     else
         cout << "Error" << endl << flush;
+}
+
+void Test::multi_test_LP_based(const vector<SpacedQmer>& multi_spaced) {
+    for (size_t i = 0; i < this->to_hash.size(); ++i) {
+        for (size_t j = 0; j < multi_spaced.size(); ++j) {
+            const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&multi_spaced[j]);
+            if (spacedLP) {
+                Hash_Err_V vHash;
+                GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash, CharToInt);
+            }
+        }
+    }
 }
 
 void Test::multi_test_naive(const vector<SpacedQmer>& multi_spaced) {
