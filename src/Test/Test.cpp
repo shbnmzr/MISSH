@@ -130,22 +130,20 @@ void Test::single_test_equals(const SpacedQmer& spaced) {
         GetHashes_with_ISSH(this->to_hash[i], spaced, vHash_ISSH, CharToInt);
 
         const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&spaced);
-        if (spacedLP) {
-            GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash_LP, CharToInt);
-        }
+        GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash_LP, CharToInt);
 
         this->single_equals &= (vHash_naive.size() == vHash_speedup_previous.size()
             && vHash_naive.size() == vHash_ISSH.size()
-            && (!spacedLP || vHash_naive.size() == vHash_LP.size()));
+            && (vHash_naive.size() == vHash_LP.size()));
         if (this->single_equals) {
             for (size_t j = 0; j < vHash_naive.size(); ++j) {
                 this->single_equals = (vHash_naive[j].isCorrect() == vHash_speedup_previous[j].isCorrect()
                     && vHash_naive[j].isCorrect() == vHash_ISSH[j].isCorrect()
-                    && (!spacedLP || vHash_naive[j].isCorrect() == vHash_LP[j].isCorrect()));
+                    && (vHash_naive[j].isCorrect() == vHash_LP[j].isCorrect()));
                 if (this->single_equals) {
                     this->single_equals &= (vHash_naive[j].hash == vHash_speedup_previous[j].hash
                         && vHash_naive[j].hash == vHash_ISSH[j].hash
-                        && (!spacedLP || vHash_naive[j].hash == vHash_LP[j].hash));
+                        && (vHash_naive[j].hash == vHash_LP[j].hash));
                     if (!this->single_equals)
                         cout << "";
                 } else
@@ -183,11 +181,9 @@ void Test::single_test_ISSH(const SpacedQmer& spaced) {
 
 void Test::single_test_linear_programming_set_covering(const SpacedQmer& spaced) {
     const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&spaced);
-    if (spacedLP) {
-        for (size_t i = 0; i < this->to_hash.size(); ++i) {
-            Hash_Err_V vHash;
-            GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash, CharToInt);
-        }
+    for (size_t i = 0; i < this->to_hash.size(); ++i) {
+        Hash_Err_V vHash;
+        GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash, CharToInt);
     }
 }
 
