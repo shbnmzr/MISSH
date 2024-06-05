@@ -9,37 +9,44 @@ GPP_PATH := /opt/homebrew/bin/g++-14 # Adjust this path if necessary
 CC := $(GPP_PATH)
 CXX := $(GPP_PATH)
 
+# OR-Tools paths
+ORTOOLS_INCLUDE := /Users/shabnamzareshahraki/Downloads/or-tools/include # Adjust this path if necessary
+ORTOOLS_LIB := /Users/shabnamzareshahraki/Downloads/or-tools-runtime/runtimes/osx-arm64/native # Adjust this path if necessary
+GCC_INCLUDE := /opt/homebrew/Cellar/gcc/14.1.0/include/c++/14 # Adjust this path if necessary
+
 # if make debug was called, define directories accordingly and add -g flag
 ifeq (debug,$(filter debug,$(MAKECMDGOALS)))
-	OBJ_DIR := $(DEBUG_DIR)/obj
-	DEPS_DIR := $(DEBUG_DIR)/deps
+    OBJ_DIR := $(DEBUG_DIR)/obj
+    DEPS_DIR := $(DEBUG_DIR)/deps
 
-	CFLAGS = -g -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
+    CFLAGS = -g -std=c++17 -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp -I$(ORTOOLS_INCLUDE) -I$(GCC_INCLUDE)
+    LDFLAGS = -L$(ORTOOLS_LIB) -lortools -fopenmp
 
 # if make clean all, define directories accordingly
 else ifeq (all,$(filter all,$(MAKECMDGOALS)))
-	OBJ_DIR := $(BUILD_DIR)/obj
-	DEPS_DIR := $(BUILD_DIR)/deps
+    OBJ_DIR := $(BUILD_DIR)/obj
+    DEPS_DIR := $(BUILD_DIR)/deps
 
-	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
+    CFLAGS = -std=c++17 -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp -I$(ORTOOLS_INCLUDE) -I$(GCC_INCLUDE)
+    LDFLAGS = -L$(ORTOOLS_LIB) -lortools -fopenmp
 endif
 
 ifeq ($(OS),Windows_NT)
-	# if on windows, search for all .cpp files from sources directory
-	CPP_SRCS := $(shell FORFILES /P $(SOURCE_DIR) /S /M *.cpp /C "CMD /C ECHO @relpath")
+    # if on windows, search for all .cpp files from sources directory
+    CPP_SRCS := $(shell FORFILES /P $(SOURCE_DIR) /S /M *.cpp /C "CMD /C ECHO @relpath")
 
-	# create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
-	OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-	CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
-	TREE_WINDOWS := $(sort $(patsubst %/,%,$(dir $(OBJS))))
+    # create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
+    OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+    CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
+    TREE_WINDOWS := $(sort $(patsubst %/,%,$(dir $(OBJS))))
 else
-	# if on unix, search for all .cpp files from sources directory
-	CPP_SRCS := $(shell find $(SOURCE_DIR) -name "*.cpp")
+    # if on unix, search for all .cpp files from sources directory
+    CPP_SRCS := $(shell find $(SOURCE_DIR) -name "*.cpp")
 
-	# create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
-	OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-	CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
-	TREE_UNIX := $(sort $(patsubst %/,%,$(dir $(OBJS))))
+    # create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
+    OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+    CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
+    TREE_UNIX := $(sort $(patsubst %/,%,$(dir $(OBJS))))
 endif
 
 # all target
@@ -48,7 +55,7 @@ all: $(BUILD_DIR)/ISSH
 $(BUILD_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) $(LDFLAGS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -58,7 +65,7 @@ debug: $(DEBUG_DIR)/ISSH
 $(DEBUG_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) $(LDFLAGS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

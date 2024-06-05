@@ -4,7 +4,10 @@
 #include "SpacedQmer.h"
 #include "../Hash/HashType.h"
 #include "../Hash/HashFunction.h"
+#include <vector>
 
+// Include OR-Tools headers
+#include "ortools/linear_solver/linear_solver.h"
 
 // Class for LP-based spaced seed hashing
 class SpacedQmerLP : public SpacedQmer {

@@ -454,10 +454,9 @@ void Test::multi_test_LP_based(const vector<SpacedQmer>& multi_spaced) {
     for (size_t i = 0; i < this->to_hash.size(); ++i) {
         for (size_t j = 0; j < multi_spaced.size(); ++j) {
             const SpacedQmerLP* spacedLP = dynamic_cast<const SpacedQmerLP*>(&multi_spaced[j]);
-            if (spacedLP) {
-                Hash_Err_V vHash;
-                GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash, CharToInt);
-            }
+            Hash_Err_V vHash;    
+            GetHashes_with_LP(this->to_hash[i], *spacedLP, vHash, CharToInt);
+            
         }
     }
 }
