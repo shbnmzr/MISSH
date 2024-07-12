@@ -9,6 +9,7 @@
 #include "../Input/FileScan.h"
 #include "../Chrono/Chrono.h"
 #include "../Parameter/Parameter.h"
+#include <limits>
 
 class Test {
 public:

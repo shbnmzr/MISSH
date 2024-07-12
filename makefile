@@ -1,91 +1,98 @@
-USER_OBJS :=
-LIBS :=
-
-# define base directories and compiler
+# Define base directories and compiler
 DEBUG_DIR := ./debug
 BUILD_DIR := ./build
 SOURCE_DIR := ./src
-CC = g++
+GPP_PATH := /opt/homebrew/bin/g++-14
+CC := $(GPP_PATH)
+CXX := $(GPP_PATH)
 
-
-# if make debug was called, define directories accordingly and add -g flag
+# If make debug was called, define directories accordingly and add -g flag
 ifeq (debug,$(filter debug,$(MAKECMDGOALS)))
-	OBJ_DIR := $(DEBUG_DIR)/obj
-	DEPS_DIR := $(DEBUG_DIR)/deps
+    OBJ_DIR := $(DEBUG_DIR)/obj
+    DEPS_DIR := $(DEBUG_DIR)/deps
 
-	CFLAGS = -g -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
+    CFLAGS = -g -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 
-# if make clean all, define directories accordingly
+# If make clean all, define directories accordingly
 else ifeq (all,$(filter all,$(MAKECMDGOALS)))
-	OBJ_DIR := $(BUILD_DIR)/obj
-	DEPS_DIR := $(BUILD_DIR)/deps
+    OBJ_DIR := $(BUILD_DIR)/obj
+    DEPS_DIR := $(BUILD_DIR)/deps
 
-	CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
-endif
-
-
-ifeq ($(OS),Windows_NT)
-	# if on windows, search for all .cpp files from sources directory
-	CPP_SRCS := $(shell FORFILES /P $(SOURCE_DIR) /S /M *.cpp /C "CMD /C ECHO @relpath")
-
-	# create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
-	OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-	CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
-	TREE_WINDOWS := $(sort $(patsubst %/,%,$(dir $(OBJS))))
+    CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 else
-	# if on unix, search for all .cpp files from sources directory
-	CPP_SRCS := $(shell find $(SOURCE_DIR) -name "*.cpp")
+    OBJ_DIR := $(BUILD_DIR)/obj
+    DEPS_DIR := $(BUILD_DIR)/deps
 
-	# create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
-	OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-	CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
-	TREE_UNIX := $(sort $(patsubst %/,%,$(dir $(OBJS))))
+    CFLAGS = -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -fopenmp
 endif
 
+# Ensure OBJ_DIR and DEPS_DIR are always defined
+OBJ_DIR ?= $(BUILD_DIR)/obj
+DEPS_DIR ?= $(BUILD_DIR)/deps
 
+# CPLEX library paths
+CPLEX_DIR := /Applications/CPLEX_Studio_Community2211
+CPLEX_INCLUDE := $(CPLEX_DIR)/cplex/include
+CONCERT_INCLUDE := $(CPLEX_DIR)/concert/include
+CPLEX_LIB := $(CPLEX_DIR)/cplex/lib/arm64_osx/static_pic
+CONCERT_LIB := $(CPLEX_DIR)/concert/lib/arm64_osx/static_pic
 
-# all target
+INCLUDES := -I$(CPLEX_INCLUDE) -I$(CONCERT_INCLUDE)
+LIBS := -L$(CPLEX_LIB) -L$(CONCERT_LIB) -lcplex -lilocplex -lconcert -lpthread
+
+# If on unix, search for all .cpp files from sources directory
+CPP_SRCS := $(shell find $(SOURCE_DIR) -name "*.cpp")
+
+# Create objs and deps lists, and a list with all subdirectories to create inside OBJ_DIR
+OBJS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+CPP_DEPS := $(CPP_SRCS:$(SOURCE_DIR)/%.cpp=$(OBJ_DIR)/%.d)
+TREE_UNIX := $(sort $(patsubst %/,%,$(dir $(OBJS))))
+
+# Debugging help
+$(info DEBUG_DIR=$(DEBUG_DIR))
+$(info BUILD_DIR=$(BUILD_DIR))
+$(info SOURCE_DIR=$(SOURCE_DIR))
+$(info OBJ_DIR=$(OBJ_DIR))
+$(info DEPS_DIR=$(DEPS_DIR))
+$(info CPP_SRCS=$(CPP_SRCS))
+$(info OBJS=$(OBJS))
+$(info CPP_DEPS=$(CPP_DEPS))
+$(info TREE_UNIX=$(TREE_UNIX))
+
+# All target
 all: $(BUILD_DIR)/ISSH
 
 $(BUILD_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CC) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-
-# debug target
+# Debug target
 debug: $(DEBUG_DIR)/ISSH
 
 $(DEBUG_DIR)/ISSH: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	$(CC) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
+	$(CXX) -o "$@" $(OBJS) $(USER_OBJS) $(LIBS) -fopenmp
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-
-# compile all dependencies for ISSH
+# Compile all dependencies for ISSH
 .SECONDEXPANSION:
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp | $$(@D)
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	mkdir -p $(dir $@)
+	$(CXX) $(CFLAGS) $(INCLUDES) -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-
-# create subdirectories tree, depending on which system we are
-
-$(TREE_WINDOWS): %:
-	MKDIR $@
-	MKDIR $(@:$(OBJ_DIR)%=$(DEPS_DIR)%)
-
+# Create subdirectories tree, depending on which system we are
 $(TREE_UNIX): %:
 	mkdir -p $@
 	mkdir -p $(@:$(OBJ_DIR)%=$(DEPS_DIR)%)
-
 
 remake: clean-build all
 
@@ -98,5 +105,5 @@ clean-build:
 	-@echo ' '
 
 clean-debug:
-	$(RM) -r $(DEBUG_DIR) 
+	$(RM) -r $(DEBUG_DIR)
 	-@echo ' '

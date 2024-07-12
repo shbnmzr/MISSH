@@ -10,6 +10,7 @@ FSH e tramite ISSH.
 */
 #include "../Test/Test.h"
 
+
 Test::Test() {
 	// TODO Auto-generated constructor stub
 }
@@ -316,7 +317,7 @@ void Test::multi_test_hashes(const vector<SpacedQmer>& multi_spaced) {
 	cout << "Test ISSH multi v1... " << flush;
 	chrono.exe(this, &Test::multi_test_ISSH_multi_v1, multi_spaced, this->times_multi_ISSH_multi_v1);
 	cout << "Complete" << endl << flush;
-	
+
 
 	MultiSpacedQmer MultiSeed(multi_spaced);
 	MultiSeedInfo infoCol = MultiSeed.Get_multi_seed_info_col();
@@ -331,7 +332,7 @@ void Test::multi_test_hashes(const vector<SpacedQmer>& multi_spaced) {
 	cout << "Complete" << endl << flush;
 
 	MultiSeedInfoRow infoRow = MultiSeed.Get_multi_seed_info_row();
-	
+
 	cout << "Test ISSH multi row... " << flush;
 	chrono.exe(this, &Test::multi_test_ISSH_multi_row, infoRow, this->times_multi_ISSH_multi_row);
 	cout << "Complete" << endl << flush;
@@ -446,7 +447,7 @@ void Test::multi_test_equals(const vector<SpacedQmer>& multi_spaced) {
 				// cycles through hashes
 				for(size_t h = 0; h < vHashes_single[j].size() && this->multi_equals; ++h)
 				{
-					// check if the errors in the sequence are in the same positions 
+					// check if the errors in the sequence are in the same positions
 					// NOTE: error checking is not actually implemented!
 					this->multi_equals &= multi_previous[h].get().isCorrect() == vHashes_single[j][h].isCorrect();
 					this->multi_equals &= vHashes_ISSH_single[j][h].isCorrect() == vHashes_single[j][h].isCorrect();
@@ -516,7 +517,7 @@ void Test::multi_test_naive(const vector<SpacedQmer>& multi_spaced) {
 		for(size_t j = 0; j < multi_spaced.size(); ++j)
 		{
 			GetHashes_naive(this->to_hash[i], multi_spaced[j], hash_v[j], CharToInt);
-		
+
 			// // Print hashing result
 			// for(size_t k=0; k<hash_v[j].size(); k++)
 			// {
@@ -566,14 +567,14 @@ void Test::multi_test_ISSH_multi_v1(const vector<SpacedQmer>& multi_spaced) {
 	size_t max_transient_length = 0;
 	size_t curr_max;
 	for(size_t j = 0; j < multi_spaced.size(); ++j)
-	{	
+	{
 		VV_shifts[j] = multi_spaced[j].GetMultipleShifts();
 		v_pos_one[j] = multi_spaced[j].GetPosOne();
 		curr_max = VV_shifts[j].size();
 		max_transient_length = curr_max > max_transient_length ? curr_max : max_transient_length;
 	}
 	for(size_t i = 0; i < this->to_hash.size(); ++i)
-		GetHashes_with_ISSH_multi_v1(this->to_hash[i], multi_spaced, VV_shifts, v_pos_one, max_transient_length, hash_v, CharToInt);				
+		GetHashes_with_ISSH_multi_v1(this->to_hash[i], multi_spaced, VV_shifts, v_pos_one, max_transient_length, hash_v, CharToInt);
 	// Print hashing result
 	// cout<< "hashes ISSH multi v1:\n";
 	// for(size_t j = 0; j < multi_spaced.size(); ++j)
@@ -586,7 +587,7 @@ void Test::multi_test_ISSH_multi_v1(const vector<SpacedQmer>& multi_spaced) {
 	// 	cout << endl;
 	// }
 
-	
+
 }
 
 void Test::multi_test_ISSH_multi_col(const MultiSeedInfo& infoCol) {
@@ -629,7 +630,7 @@ void Test::multi_test_ISSH_multi_row(const MultiSeedInfoRow& infoRow) {
 	Hash_Err_V_V hash_v(infoRow.info.size());
 	for(size_t i = 0; i < this->to_hash.size(); ++i)
 		GetHashes_with_ISSH_multi_row(this->to_hash[i], infoRow, hash_v, CharToInt);
-	
+
 	// cout<< "hashes ISSH multi row:\n";
 	// for(size_t j = 0; j < multi_spaced.size(); ++j)
 	// {
@@ -640,7 +641,6 @@ void Test::multi_test_ISSH_multi_row(const MultiSeedInfoRow& infoRow) {
 	// 	}
 	// 	cout << endl;
 	// }
-	
+
 
 }
-

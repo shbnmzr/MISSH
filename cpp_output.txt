@@ -1,0 +1,52 @@
+
+Applied the following spaced seed...
+Type:101110110010111/, Spaced seed: 101110110010111
+Type:110011110001111/, Spaced seed: 110011110001111
+Type:110101110001111/, Spaced seed: 110101110001111
+Type:110110111001101/, Spaced seed: 110110111001101
+Type:111011001011011/, Spaced seed: 111011001011011
+Type:111100110010111/, Spaced seed: 111100110010111
+Type:111100110111001/, Spaced seed: 111100110111001
+Type:111110001101011/, Spaced seed: 111110001101011
+Type:111111000101011/, Spaced seed: 111111000101011
+Performing test for a single spaced seed at a time
+Load sequences... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+Test naive... Complete
+Test speedup previous... Complete
+Test ISSH... Complete
+
+Performing test for multiple spaced seeds at a time
+Load sequences... Complete
+Test naive... Complete
+Test previous... Complete
+Test ISSH single... Complete
+Test multi previous... Complete
+Test ISSH multi v1... Complete
+Test ISSH multi col... Complete
+Test ISSH multi col parallel... Complete
+Test ISSH multi row... Complete
+End
