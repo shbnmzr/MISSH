@@ -36,12 +36,12 @@ private:
 
 	Chrono::start_end_time times_multi_naive;
 	Chrono::start_end_time times_multi_speedup_previous;
-	Chrono::start_end_time times_multi_ISSH_single;	
+	Chrono::start_end_time times_multi_ISSH_single;
 	Chrono::start_end_time times_multi_speedup_multi_previous;
 	Chrono::start_end_time times_multi_ISSH_multi_v1;
-	Chrono::start_end_time times_multi_ISSH_multi_col;	
+	Chrono::start_end_time times_multi_ISSH_multi_col;
 	Chrono::start_end_time times_multi_ISSH_multi_col_parallel;
-	Chrono::start_end_time times_multi_ISSH_multi_row;	
+	Chrono::start_end_time times_multi_ISSH_multi_row;
 
 	bool single_equals = true;
 

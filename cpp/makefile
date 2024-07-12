@@ -31,7 +31,7 @@ OBJ_DIR ?= $(BUILD_DIR)/obj
 DEPS_DIR ?= $(BUILD_DIR)/deps
 
 # CPLEX library paths
-CPLEX_DIR := /Applications/CPLEX_Studio_Community2211
+CPLEX_DIR := /Applications/CPLEX_Studio2211
 CPLEX_INCLUDE := $(CPLEX_DIR)/cplex/include
 CONCERT_INCLUDE := $(CPLEX_DIR)/concert/include
 CPLEX_LIB := $(CPLEX_DIR)/cplex/lib/arm64_osx/static_pic

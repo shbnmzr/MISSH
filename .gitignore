@@ -24,3 +24,8 @@ debug/
 output/
 # Other Folders
 Sequences/
+
+input/
+input/*
+cplex_env/
+/cplex_env

@@ -5,21 +5,22 @@
 #include "Test/Test.h"
 
 int main(int argc, char* argv[]) {
-	string dir_output = "../output/";
+    bool print_output = false;
+
+	string dir_output = "./output/";
 	bool sequence = false;
 	FileParameter param;
 	omp_set_num_threads(4);	
 	// default setting: performs the test multi
 	int test_kind = 2;
 
-	for(int i=1; i<argc; i++)
-	{
+	for(int i=1; i<argc; i++) {
 		if(strcmp(argv[i], "-si") == 0)
 		{
 			i++;
 			if(!param.init(argv[i], ""))
 			{
-				cerr<<endl<<"Please enter an input filename single-end: -si <AbsPathFile>"<<flush;
+                cerr<<endl<<"Please enter an input filename single-end: -si <AbsPathFile>"<<flush;
 				return 0;
 			}
 			sequence = true;
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
 			i++;
 			if(!param.init(argv[i], argv[i+1]))
 			{
-				cerr<<endl<<"Please enter an input filenames paired-end: -pi <AbsPathFile1> <AbsPathFile2>\n"<<flush;
+                cerr<<endl<<"Please enter an input filenames paired-end: -pi <AbsPathFile1> <AbsPathFile2>\n"<<flush;
 				return 0;
 			}
 			sequence = true;
@@ -48,8 +49,8 @@ int main(int argc, char* argv[]) {
 					correctQmer[i] = regex_match(lines[i], rgx);
 					if(!correctQmer[i])
 					{
-						cerr<<endl<<"Error on " << to_string(i+1) << "° spaced seed. Enter q-mer with 1 at begin and end of the string on input files. "
-						"Ex. 1**1*11*1. 1 is the simbol considered, any others are not valid simbols.\n"<<flush;
+                        cerr<<endl<<"Error on " << to_string(i+1) << "° spaced seed. Enter q-mer with 1 at begin and end of the string on input files. "
+                        "Ex. 1**1*11*1. 1 is the simbol considered, any others are not valid simbols.\n"<<flush;
 						return 0;
 					}
 					else
@@ -60,7 +61,7 @@ int main(int argc, char* argv[]) {
 			}
 			else
 			{
-				cerr<<endl<<"Please enter a spaced seeds path as -q <AbsPathFile>. Every file's line must contain a spaced seeds.\n"<<flush;
+                cerr<<endl<<"Please enter a spaced seeds path as -q <AbsPathFile>. Every file's line must contain a spaced seeds.\n"<<flush;
 				return 0;
 			}
 		}
@@ -82,8 +83,7 @@ int main(int argc, char* argv[]) {
 		// recuperabili con quegli hash.
 		// Attenzione! Deve essere impostato prima di -q, altrimenti non ha alcun
 		// effetto.
-		else if(strcmp(argv[i], "-num") == 0)
-		{
+		else if(strcmp(argv[i], "-num") == 0) {
 			i++;
 			const char* s_num_prev(argv[i]);
 			if(!isdigit(s_num_prev[0]))
@@ -145,20 +145,26 @@ int main(int argc, char* argv[]) {
 		param.addSpacedQmer("rasbhari_maximizing_sensitivity", "1111011110011010111110101011011");
 		param.addSpacedQmer("rasbhari_maximizing_sensitivity", "1110101011101100110100111111111");
 		param.addSpacedQmer("rasbhari_maximizing_sensitivity", "1111110101101011100111011001111");
-		cout << endl << "Applied default spaced seed" << flush;
+		if(print_output)
+            cout << endl << "Applied default spaced seed" << flush;
 	}
 	//Creo cartella output se non presente
 	createDirAndSubDir(dir_output);
 
-	cout << endl << "Applied the following spaced seed..." << flush;
-	for(size_t i = 0; i < param.getVSpaced().size(); i++)
-		cout << endl << "Type:" << param.getVSpaced()[i].first << ", Spaced seed: " << param.getVSpaced()[i].second.toString() << flush;
+    if(print_output)
+        cout << endl << "Applied the following spaced seed..." << flush;
+
+    if(print_output) {
+        for(size_t i = 0; i < param.getVSpaced().size(); i++)
+            cout << endl << "Type:" << param.getVSpaced()[i].first << ", Spaced seed: " << param.getVSpaced()[i].second.toString() << flush;
+    }
 
 
 // Test for a single spaced seed at a time
 	if (test_kind == 0 || test_kind == 2)
 	{
-		cout << endl << "Performing test for a single spaced seed at a time"  << flush;
+        if(print_output)
+            cout << endl << "Performing test for a single spaced seed at a time"  << flush;
 
 		bool single_test_equals = false;
 		string dir_output_1 = dir_output + "single/";
@@ -179,7 +185,8 @@ int main(int argc, char* argv[]) {
 
 	if (test_kind == 1 || test_kind == 2)
 	{
-		cout << endl << "Performing test for multiple spaced seeds at a time"  << flush;
+        if(print_output)
+            cout << endl << "Performing test for multiple spaced seeds at a time"  << flush;
 
 		bool multi_test_equals = false;
 		string dir_output_2 = dir_output + "multi/";
