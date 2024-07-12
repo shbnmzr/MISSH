@@ -1,0 +1,25 @@
+py ../inputs/reads_800.fa ../seeds/W26L31.fna: 126.75 124.3
+py ../inputs/reads_800.fa ../seeds/W32L45.fna: 130.78 130.21
+py ../inputs/reads_800.fa ../seeds/W14L31.fna: 123.46 123.36
+py ../inputs/reads_800.fa ../seeds/W18L31.fna: 126.49 124.92
+py ../inputs/reads_800.fa ../seeds/W22L31.fna: 124.61 124.29
+py ../inputs/reads_800.fa ../seeds/W10L15.fna: 119.74 119.41
+py ../inputs/small_test.fa ../seeds/W26L31.fna: 98.02 97.44
+py ../inputs/small_test.fa ../seeds/W32L45.fna: 95.91 95.83
+py ../inputs/small_test.fa ../seeds/W14L31.fna: 97.26 97.16
+py ../inputs/small_test.fa ../seeds/W18L31.fna: 97.08 97.02
+py ../inputs/small_test.fa ../seeds/W22L31.fna: 97.05 96.97
+py ../inputs/small_test.fa ../seeds/W10L15.fna: 99.37 98.17
+
+cpp ../inputs/reads_800.fa ../seeds/W26L31.fna: 831.68 866.71
+cpp ../inputs/reads_800.fa ../seeds/W32L45.fna: 1066.45 1130.24
+cpp ../inputs/reads_800.fa ../seeds/W14L31.fna: 833.87 849.92
+cpp ../inputs/reads_800.fa ../seeds/W18L31.fna: 937.04 936.28
+cpp ../inputs/reads_800.fa ../seeds/W22L31.fna: 934.48 934.13
+cpp ../inputs/reads_800.fa ../seeds/W10L15.fna: 597.73 597.12
+cpp ../inputs/small_test.fa ../seeds/W26L31.fna: 13.66 10.39
+cpp ../inputs/small_test.fa ../seeds/W32L45.fna: 17.14 15.39
+cpp ../inputs/small_test.fa ../seeds/W14L31.fna: 11.38 10.2
+cpp ../inputs/small_test.fa ../seeds/W18L31.fna: 10.3 9.84
+cpp ../inputs/small_test.fa ../seeds/W22L31.fna: 9.91 9.87
+cpp ../inputs/small_test.fa ../seeds/W10L15.fna: 7.68 7.67
