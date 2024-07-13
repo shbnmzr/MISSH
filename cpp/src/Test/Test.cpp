@@ -86,25 +86,25 @@ bool Test::single_run(const SpacedQmer& spaced, bool test_equals) {
 // oltre a salvare il i tempi nel caso naive e nel caso speedup_previous(FSH)
 // lo salvo anche del calcolo dell'algoritmo ISSH.
 void Test::single_save(const FileParameter& file, string dir_output) {
-	createDirAndSubDir(dir_output);
+//	createDirAndSubDir(dir_output);
 
 	auto naive = duration_cast<milliseconds>(this->times_naive.second - this->times_naive.first);
 	auto speedup_previous = duration_cast<milliseconds>(this->times_speedup_previous.second - this->times_speedup_previous.first);
 	auto ISSH = duration_cast<milliseconds>(this->times_ISSH.second - this->times_ISSH.first);
 
-	string output_file = dir_output+"times.csv";
-	bool exist = file_exist(output_file);
-	ofstream output;
-	if(exist)
-		output.open(output_file, ofstream::out | ofstream::app);
-	else
-	{
-		output.open(output_file, ofstream::out);
-		output << "Files,n_seq,m_size,t_naive,t_previous,t_ISSH," << endl << flush;
-	}
-	string str_equals = this->single_equals ? "yes" : "no";
-	output << file.getInputFiles().getIdentify() << "," << this->to_hash.size() << "," << this->read_size_mean << "," << naive.count() << "," << speedup_previous.count() << "," << ISSH.count() << "," << str_equals << "," << endl << flush;
-	output.close();
+//	string output_file = dir_output+"times.csv";
+//	bool exist = file_exist(output_file);
+//	ofstream output;
+//	if(exist)
+//		output.open(output_file, ofstream::out | ofstream::app);
+//	else
+//	{
+//		output.open(output_file, ofstream::out);
+//		output << "Files,n_seq,m_size,t_naive,t_previous,t_ISSH," << endl << flush;
+//	}
+//	string str_equals = this->single_equals ? "yes" : "no";
+//	output << file.getInputFiles().getIdentify() << "," << this->to_hash.size() << "," << this->read_size_mean << "," << naive.count() << "," << speedup_previous.count() << "," << ISSH.count() << "," << str_equals << "," << endl << flush;
+//	output.close();
 }
 
 // È stata aggiunta la chiamata dentro chrono anche della nuova funzione single_test_ISSH

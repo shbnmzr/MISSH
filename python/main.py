@@ -1,4 +1,3 @@
-import json
 import cplex
 import sys
 from src.SetCovering import *

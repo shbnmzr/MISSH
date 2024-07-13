@@ -1,5 +1,4 @@
 import cplex
-from Bio import SeqIO
 
 
 def read_fasta(file_path):
@@ -20,6 +19,7 @@ def read_fasta(file_path):
             sequences[sequence_name] = sequence_data
     return sequences
 
+
 # Function to read seed patterns from a file
 def read_seed_patterns(file_path):
     seed_patterns = []
@@ -30,6 +30,7 @@ def read_seed_patterns(file_path):
                 seed_patterns.append(line)
     return seed_patterns
 
+
 # Function to generate spaced k-mers from a sequence
 def generate_spaced_kmers(sequence, seed_pattern):
     kmers = set()
@@ -38,6 +39,7 @@ def generate_spaced_kmers(sequence, seed_pattern):
         kmer = ''.join([sequence[i + j] if seed_pattern[j] == '1' else '-' for j in range(seed_length)])
         kmers.add(kmer)
     return kmers
+
 
 # Function to generate elements and subsets from sequences using spaced seeds
 def generate_subsets(sequences, seed_patterns):
@@ -49,6 +51,7 @@ def generate_subsets(sequences, seed_patterns):
             elements.update(kmers)
             subsets.append((seq_name + '_' + seed_pattern, kmers))
     return list(elements), subsets
+
 
 # Function to solve the Set Cover problem using CPLEX
 def solve_set_cover(elements, subsets):
