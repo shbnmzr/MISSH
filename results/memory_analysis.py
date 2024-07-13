@@ -1,25 +1,17 @@
-import sys
-import glob
+from memory_profiler import profile
 from statistics import mean
 from statistics import median
-from memory_profiler import profile
+import sys
+import glob
+from helpers import command_time
 
 @profile
-def check():
-    a = [i for i in range(100000)]
-    b = [i * 2 for i in a]
-    b = 100 * b
-    return b
-
-if __name__ == '__main__':
-    check()
-
 def main():
     if len(sys.argv) != 2:
         exit(f"Usage: {sys.argv[0]} [LANGUAGE]")
 
     python_base_command = "../python/cplex_env/bin/python ../python/main.py {} {}"
-    cpp_base_command = "../cpp/build/ISSH -si {} -q {}"
+    cpp_base_command = "../cpp/build/ISSH -si {} -q {} -test single"
 
     if sys.argv[1] == "py":
         base_command = python_base_command
@@ -34,7 +26,8 @@ def main():
     for input_file in inputs:
         input_file = "../inputs/" + input_file
         for seed in seeds:
-            experiments = []
-            for i in range(50):
-                experiments.append()
-            print(f"{sys.argv[1]} {input_file} {seed}: {round(mean(experiments), 2)} {round(median(experiments), 2)}")
+            command_time(base_command.format(input_file, seed))
+
+
+if __name__ == '__main__':
+    main()

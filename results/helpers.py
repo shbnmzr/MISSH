@@ -5,8 +5,6 @@ import time
 import subprocess
 
 
-
-
 def command_in_thread(command: str):
     def thread_function():
         os.system(command)
@@ -19,8 +17,12 @@ def command_in_thread(command: str):
 def command_time(command: str):
     start_time = time.time()
     # os.system(command)
-    subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    run_command(command)
     return round((time.time() - start_time) * 1000, 2)
+
+
+def run_command(command: str):
+    subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 def memory():
